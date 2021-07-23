@@ -92,6 +92,7 @@ u = sparse(size(coordinates,1),1);
 u(unique(dirichlet)) = u_d(coordinates(unique(dirichlet),:));
 b = b - A * u;
 
+% <<< method 1
 A = full(A);
 b = full(b);
 b(unique(dirichlet)) = u_d(coordinates(unique(dirichlet), :));
@@ -103,9 +104,12 @@ for i = 1:size(temp)
 end
 u = A \ b;
 show(elements3,elements4,coordinates,full(u));
+% >>>
 
+% <<< method 2
 % Computation of the solution
 % u(FreeNodes) = A(FreeNodes,FreeNodes) \ b(FreeNodes);
 
 % graphic representation
 % show(elements3,elements4,coordinates,full(u));
+% >>>
