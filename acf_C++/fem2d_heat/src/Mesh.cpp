@@ -32,11 +32,15 @@ Mesh::Mesh(void){
     // print_for_debug();
 
     computeFeatures();
-    std::cout << "compute features" << std::endl;
+    std::cout << "[fem2dHeat] --info-- compute features" << std::endl;
+
+    linSysSolver = new EigenLibSolver();
+    linSysSolver->set_pattern(vNeighbor);
+    std::cout << "[fem2dHeat] --info-- linear solver: set pattern" << std::endl;
 }
 
 Mesh::~Mesh(void){
-
+    delete linSysSolver;
 }
 
 void Mesh::print_for_debug(void){
@@ -51,7 +55,42 @@ void Mesh::print_for_debug(void){
 }
 
 void Mesh::computeFeatures(void){ // compute vNeighbor, FixedV, FreeV
+    vNeighbor.resize(V.rows()); // compute vNeighbor
+    for(int vI=0; vI<V.rows(); ++vI){
+        vNeighbor[vI].insert(vI);
+    }
+    for(int triI=0; triI<F.rows(); ++triI){
+        const Eigen::Matrix<int, 1, 3> &triVInd = F.row(triI);
+        for(int i=0; i<3; ++i){
+            int vI = triVInd(i);
+            for(int j=i+1; j<3; ++j){
+                int vJ = triVInd(j);
+                vNeighbor[vI].insert(vJ);
+                vNeighbor[vJ].insert(vI);
+            }
+        }
+    }
+
+    for(int DBCI=0; DBCI<DBC.rows(); ++DBCI){ // compute FixedV
+        const Eigen::Matrix<int, 1, 2> &DBCVInd = DBC.row(DBCI);
+        FixedV.insert(DBCVInd(0));
+        FixedV.insert(DBCVInd(1));
+    }
+
+    for(int vI=0; vI<V.rows(); ++vI){ // compute FreeV
+        if(FixedV.find(vI)==FixedV.end()){
+            FreeV.insert(vI);
+        }
+    }
+}
+
+void Mesh::assembly_K(void){
     
 }
 
+    /*
+    void assembly_b(void);
+    void adjustByDirichlet(void);
+    void solve(void);
+    */
 } // namespace

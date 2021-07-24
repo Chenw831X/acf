@@ -13,7 +13,6 @@
 
 int main(){
     fem2dHeat::Mesh mesh = fem2dHeat::Mesh();
-    std::cout << "[fem2dHeat] --info-- mesh constructed" << std::endl;
 
     return 0;
 }

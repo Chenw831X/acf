@@ -8,6 +8,8 @@
 #ifndef Mesh_hpp
 #define Mesh_hpp
 
+#include "EigenLibSolver.hpp"
+
 #include <Eigen/Eigen>
 
 #include <iostream>
@@ -28,6 +30,7 @@ public: // owned features
     std::vector<std::set<int>> vNeighbor;
     std::set<int> FixedV;
     std::set<int> FreeV;
+    LinSysSolver *linSysSolver;
     
 public: // constructor
     Mesh(void);
@@ -38,6 +41,10 @@ public:
 
 public: // API
     void print_for_debug(void);
+    void assembly_K(void);
+    void assembly_b(void);
+    void adjustByDirichlet(void);
+    void solve(void);
 
 public: // interfaces
 
