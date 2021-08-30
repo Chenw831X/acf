@@ -1,9 +1,4 @@
 cmake_minimum_required(VERSION 3.9)
-
-# these two lines are for Windows
-set(CMAKE_C_COMPILER "gcc")
-set(CMAKE_CXX_COMPILER "g++")
-
 project(fem2d)
 
 # project source files
@@ -28,4 +23,4 @@ target_include_directories(${PROJECT_NAME}_dev PUBLIC
 add_executable(${PROJECT_NAME}_bin "src/main.cpp")
 target_link_libraries(${PROJECT_NAME}_bin PUBLIC ${PROJECT_NAME}_dev)
 # Eigen, modify path based on your machine
-target_include_directories(${PROJECT_NAME}_dev PUBLIC "D:/Library/eigen-3.3.9")
+target_include_directories(${PROJECT_NAME}_dev PUBLIC "/usr/local/include/eigen-3.4.0")
